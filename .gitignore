@@ -1,0 +1,42 @@
+*.log
+.DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.worktrees
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+Thumbs.db
+
+# --- Not published -------------------------------------------------------------
+# A separate deliverable by another writer: the proposal document, its
+# screenshots and its build. Not application code, and 3 MB of binary documents
+# is weight nobody clones this repository for.
+/docs/proposal/
+/tools/proposal-cleanup.py
+/tools/proposal-shots.mjs
+
+# The Caddy block that served this hostname before `enable` gave it to this app:
+# host state, like .env, not source. It stays on disk because
+# `deploy/host-cpns.sh disable` writes it back, and it stays out of the
+# repository because publishing it would publish whose page this one replaced.
+/deploy/caddy/*.static-clone.caddy

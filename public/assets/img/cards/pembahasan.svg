@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="800" viewBox="0 0 700 800" role="img" aria-label="PEMBAHASAN">
+  <title>PEMBAHASAN</title>
+  <defs>
+    <linearGradient id="panelFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#066aa8"/>
+      <stop offset="1" stop-color="#064a78"/>
+    </linearGradient>
+    <clipPath id="panelClip">
+      <rect width="700" height="800" rx="28"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#panelClip)">
+    <rect width="700" height="800" fill="url(#panelFill)"/>
+    <g transform="translate(221.818 -156.147) scale(28.182)" fill="#ffffff" opacity="0.07"><path d="M10.04 4.305c2.195-.667 4.615-.224 6.36 1.176c1.386 1.108 2.188 2.686 2.252 4.34l.003.212l.091.003c2.3.107 4.143 1.961 4.25 4.27l.004.211c0 2.407-1.885 4.372-4.255 4.482l-.21.005h-11.878l-.222-.008c-2.94-.11-5.317-2.399-5.43-5.263l-.005-.216c0-2.747 2.08-5.01 4.784-5.417l.114-.016l.07-.181c.663-1.62 2.056-2.906 3.829-3.518l.244-.08z"/></g>
+    <circle cx="70" cy="770" r="250" fill="#ffffff" fill-opacity="0.05"/>
+    <circle cx="656" cy="700" r="150" fill="#ffffff" fill-opacity="0.05"/>
+    <rect x="223" y="204" width="286" height="372" rx="22" fill="#ffffff" fill-opacity="0.35"/>
+  <rect x="197" y="182" width="286" height="372" rx="22" fill="#ffffff"/>
+  <rect x="229" y="216" width="118" height="18" rx="9" fill="#033859" fill-opacity="0.55"/>
+  <rect x="229" y="320" width="214" height="14" rx="7" fill="#dce5ef"/>
+  <rect x="229" y="354" width="214" height="14" rx="7" fill="#dce5ef"/>
+  <rect x="229" y="388" width="214" height="14" rx="7" fill="#dce5ef"/>
+  <rect x="229" y="422" width="140" height="14" rx="7" fill="#dce5ef"/>
+  <circle cx="449" cy="520" r="54" fill="#033859"/>
+  <path d="M423 521.3 L441.72 537.68 L475 500.5" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="350" y="722" font-family="Quicksand, Barlow, Helvetica, Arial, sans-serif" font-size="46" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="4">PEMBAHASAN</text>
+    <rect x="280" y="748" width="140" height="6" rx="3" fill="#ffffff" fill-opacity="0.7"/>
+  </g>
+</svg>

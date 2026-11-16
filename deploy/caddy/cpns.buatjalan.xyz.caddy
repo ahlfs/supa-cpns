@@ -1,0 +1,57 @@
+# SUPA CPNS — the Laravel application, served by the system Caddy on this host.
+#
+# Caddy terminates TLS and hands PHP to the pool's own socket; the app's document
+# root is public/, so nothing outside it (vendor, storage, .env) is reachable over
+# HTTP. Publishing a change is `npm run build` and a reload of the pool — this
+# file does not change, and `deploy/host-cpns.sh` is what edits it.
+#
+# It replaced a static file-server block that used to answer on this hostname
+# (deploy/caddy/cpns.buatjalan.xyz.static-clone.caddy is that block, kept so
+# `host-cpns.sh disable` can put it back).
+cpns.buatjalan.xyz {
+	root * /home/ahlfs/workspace/supa-cpns/public
+
+	encode zstd gzip
+
+	# php_fastcgi rewrites a request to /index.php when the path is not a file on
+	# disk, which is what makes the app's own routing decide; static files are
+	# still answered by file_server below it.
+	php_fastcgi unix//run/php/php8.3-fpm-supa-cpns.sock
+
+	file_server
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+
+	# Finding the site in a search engine is the app's decision, not this file's:
+	# `SITE_INDEXABLE` (config/site.php) renders the `noindex, nofollow` meta tag
+	# and is false until the site is signed off. There is deliberately no
+	# X-Robots-Tag here, so going live is one environment value rather than two
+	# edits in two places.
+	#
+	# The page is the app and every deploy rewrites it, so it revalidates quickly;
+	# Vite fingerprints public/build/assets/, so those names change with their
+	# contents and are safe to pin for a year. The image and font files under
+	# /assets/ keep their names across deploys, so they get a week rather than a
+	# year — replacing one would otherwise stay invisible to a returning visitor.
+	@page path /
+	header @page Cache-Control "public, max-age=300"
+
+	@fingerprinted path /build/assets/*
+	header @fingerprinted Cache-Control "public, max-age=31536000, immutable"
+
+	@media path /assets/*
+	header @media Cache-Control "public, max-age=604800"
+
+	log {
+		output file /var/log/caddy/cpns-access.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+	}
+}

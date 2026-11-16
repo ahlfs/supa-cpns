@@ -1,0 +1,228 @@
+@import 'tailwindcss' source(none);
+@import './fonts.css';
+
+/*
+ * `source(none)` above turns off Tailwind's automatic content detection, which
+ * otherwise scans every file in the project that is not in .gitignore — including
+ * the documentation. A class-looking string in a markdown file then ends up in the
+ * built stylesheet and changes its content hash, so a doc edit looked like a
+ * design change and the page's cache-busting name moved for no reason. The three
+ * @source lines are the whole scan set: markup, the modules that toggle state, and
+ * the content files that name icons.
+ */
+@source '../views/**/*.blade.php';
+@source '../js/**/*.js';
+@source '../content/**/*.php';
+
+/*
+ * SUPA CPNS design tokens.
+ *
+ * Values come from the reference build measured in a browser (see
+ * docs/DESIGN-TOKENS.md): the brand palette, the two type scales and the card
+ * recipes the marketing page reuses on every section. Everything downstream uses
+ * these tokens, so a rebrand is a change to this block plus resources/content.
+ */
+@theme {
+    /* Typography — Barlow for body copy, Quicksand for headings, Fredoka for accents. */
+    --font-sans: 'Barlow', 'Barlow Fallback', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Barlow', 'Barlow Fallback', ui-sans-serif, system-ui, sans-serif;
+    --font-heading: 'Quicksand', 'Quicksand Fallback', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Fredoka', 'Fredoka Fallback', ui-sans-serif, system-ui, sans-serif;
+
+    /* Brand palette */
+    --color-brand: #0657a8;
+    --color-brand-dark: #063d78;
+    --color-accent: #ff831f;
+    --color-accent-dark: #e67215;
+    --color-peach: #ffedd5;
+    --color-ink: #17212b;
+    --color-body: #2b2b2b;
+    --color-muted: #5d6b7b;
+    --color-surface: #f5f8fc;
+    --color-line: #dce5ef;
+    /* Form controls need the boundary that identifies them to clear the 3:1
+       non-text contrast bar (WCAG 1.4.11). --color-line measures 1.27:1 on
+       white, which is right for a card hairline and wrong for an input, so
+       controls draw their border from this token instead: 3.35:1 on white. */
+    --color-field: #7d8ea3;
+    --color-success: #15803d;
+    --color-warning: #b45309;
+    --color-danger: #c2410c;
+
+    /* Type scale (fluid, as measured) */
+    --text-h1: clamp(24px, 3vw, 38px);
+    --text-h2: clamp(24px, 2.5vw, 30px);
+    --text-h3: clamp(19px, 1.8vw, 22px);
+    --text-kicker: clamp(12px, 1.2vw, 14px);
+    --text-lead: clamp(14.5px, 1.3vw, 16.5px);
+    --text-body: clamp(14.5px, 1.2vw, 15.5px);
+    --text-small: clamp(13px, 1vw, 13.5px);
+    --text-caption: clamp(11.5px, 0.9vw, 12.5px);
+
+    /* Layout & surfaces */
+    --container-page: 1140px;
+
+    /* The reference collapses its layouts at 992px, not Tailwind's 1024, so `lg`
+       is redefined to that width: `lg:` means "the desktop layout" everywhere. */
+    --breakpoint-lg: 992px;
+
+    --radius-card: 16px;
+    --radius-card-lg: 20px;
+    --shadow-card: 0 2px 10px rgb(7 57 108 / 0.06);
+    --shadow-card-hover: 0 16px 36px rgb(7 57 108 / 0.12);
+
+    /* Motion */
+    --animate-hero-float: hero-float 5s ease-in-out infinite;
+    --animate-dot-slide: dot-slide 2.2s infinite alternate;
+    --animate-header-slide-down: header-slide-down 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    --animate-drawer-slide-down: drawer-slide-down 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    --animate-pulse-ring: pulse-ring 2.2s infinite;
+    --animate-prefooter-ping: prefooter-ping 1.8s ease-out infinite;
+    --animate-whatsapp-bounce: whatsapp-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes hero-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes dot-slide {
+    from {
+        left: 0;
+    }
+    to {
+        left: calc(100% - 10px);
+    }
+}
+
+@keyframes header-slide-down {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -6px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes drawer-slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse-ring {
+    0% {
+        box-shadow: 0 0 rgb(255 131 31 / 0.45);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgb(255 131 31 / 0);
+    }
+    100% {
+        box-shadow: 0 0 rgb(255 131 31 / 0);
+    }
+}
+
+@keyframes prefooter-ping {
+    0% {
+        opacity: 1;
+        transform: scale(0.5);
+    }
+    80%,
+    100% {
+        opacity: 0;
+        transform: scale(1.15);
+    }
+}
+
+@keyframes whatsapp-bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-8px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    75% {
+        transform: translateY(-4px);
+    }
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /*
+     * The reference build stops its ambient motion (hero floats, badge ping,
+     * WhatsApp bounce) for visitors who ask for reduced motion; so does this one.
+     * The carousel JS reads the same preference and disables autoplay.
+     */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+
+    body {
+        background-color: #fff;
+        color: #171717;
+        font-family: var(--font-body);
+        font-weight: 500;
+        line-height: 1.855;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Inline SVG helpers used by the icon component and the CTA arrows. */
+    svg {
+        display: block;
+    }
+}
+
+/*
+ * The review list's own loading state.
+ *
+ * A filter tab fetches the review card's body and swaps it in place, so the card
+ * never goes blank and there is nothing to say the work is happening. This does:
+ * the rows dim until the new ones arrive. It is scoped to the list rather than the
+ * card so the tab that was pressed keeps its colour while it waits — the control
+ * the reader just used should not look like the thing that is loading.
+ *
+ * The transition is switched off for reduced-motion visitors along with every
+ * other one, by the base layer above.
+ */
+[data-review-list] {
+    transition: opacity 150ms ease;
+}
+
+[data-review][data-loading='true'] [data-review-list] {
+    opacity: 0.5;
+}
+
+@utility stroke-icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
